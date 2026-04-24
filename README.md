@@ -28,7 +28,7 @@ ChloroFORGE relies on the following tools (installed automatically via `setup.sh
 | Tool | Version | Link |
 |------|---------|------|
 | `minimap2` | **2.30** | https://github.com/lh3/minimap2 |
-| `Flye` | **2.9.6** (recommended) | https://github.com/mikolmogorov/Flye |
+| `Flye` | **2.9.6**| https://github.com/mikolmogorov/Flye |
 | `seqkit` | **2.13.0** | https://github.com/shenwei356/seqkit |
 | `blastn` (BLAST+) | **2.17.0** | https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/ |
 | `python3` | >=3.7 | — |
