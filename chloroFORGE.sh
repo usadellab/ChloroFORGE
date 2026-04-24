@@ -5,7 +5,6 @@
 # Author:    Lucas Munnes
 # 			 Institute for Biological Data Science, HHU
 # GitHub:    https://github.com/usadellab/ChloroFORGE
-#
 ##########################################################################
 
 set -e 
