@@ -27,10 +27,10 @@ ChloroFORGE relies on the following tools (installed automatically via `setup.sh
 
 | Tool | Version | Link |
 |------|---------|------|
-| `minimap2` | latest | https://github.com/lh3/minimap2 |
+| `minimap2` | **2.30** | https://github.com/lh3/minimap2 |
 | `Flye` | **2.9.6** (recommended) | https://github.com/mikolmogorov/Flye |
-| `seqkit` | latest | https://github.com/shenwei356/seqkit |
-| `blastn` (BLAST+) | latest | https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/ |
+| `seqkit` | **2.13.0** | https://github.com/shenwei356/seqkit |
+| `blastn` (BLAST+) | **2.17.0** | https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/ |
 | `python3` | >=3.7 | — |
 
 ---
@@ -62,7 +62,7 @@ The setup script will verify or install all required dependencies and prepare th
 | `-c` | Absolute path to chloroplast reference genome (FASTA) |
 | `-t` | Number of threads |
 
-> **Tip:** You can download a chloroplast reference from a closely related species via [NCBI GenBank or RefSeq](https://www.ncbi.nlm.nih.gov/). Search for your organism and download the chloroplast genome in FASTA format. A useful search strategy is to combine the latin organism name with terms such as "chloroplast" and "complete genome". For example, the following query can help identify suitable reference sequences: 
+> You can download a chloroplast reference from a closely related species via [NCBI GenBank or RefSeq](https://www.ncbi.nlm.nih.gov/). Search for your organism and download the chloroplast genome in FASTA format. A useful search strategy is to combine the latin organism name with terms such as "chloroplast" and "complete genome". For example, the following query can help identify suitable reference sequences: 
   `("replace_with_species"[Organism]) AND chloroplast[All Fields] AND "complete genome"[Title] `
 Use this chloroplast genome as an input for `-c`.
 
