@@ -1,8 +1,8 @@
 # ChloroFORGE
 
-> **Reassemble chloroplast genomes from precomputed assemblies — fast, accurate, and reproducible.**
+**Reassemble chloroplast genomes from precomputed assemblies — fast, accurate, and reproducible.**
 
-ChloroFORGE is a bioinformatics pipeline that identifies chloroplast-derived contigs from existing genome assemblies (e.g., generated with [hifiasm}(https://github.com/chhylp123/hifiasm) or [verkko](https://github.com/marbl/verkko) using long reads from Oxford Nanopore or PacBio) and reconstructs the complete chloroplast genome using Flye.
+ChloroFORGE is a bioinformatics pipeline that identifies chloroplast-derived contigs from existing genome assemblies (e.g., generated with [hifiasm](https://github.com/chhylp123/hifiasm) or [verkko](https://github.com/marbl/verkko) using long reads from Oxford Nanopore or PacBio) and reconstructs the complete chloroplast genome using Flye.
 
 ---
 
@@ -15,7 +15,6 @@ ChloroFORGE is a bioinformatics pipeline that identifies chloroplast-derived con
   - [Optional Arguments](#optional-arguments)
 - [Examples](#examples)
 - [Output Structure](#output-structure)
-- [Pipeline Overview](#pipeline-overview)
 - [Notes & Tips](#notes--tips)
 - [Citation](#citation)
 
@@ -64,7 +63,8 @@ The setup script will verify or install all required dependencies and prepare th
 | `-t` | Number of threads |
 
 > **Tip:** You can download a chloroplast reference from a closely related species via [NCBI GenBank or RefSeq](https://www.ncbi.nlm.nih.gov/). Search for your organism and download the chloroplast genome in FASTA format. A useful search strategy is to combine the latin organism name with terms such as "chloroplast" and "complete genome". For example, the following query can help identify suitable reference sequences: 
-  `("replace_with_species"[Organism]) AND chloroplast[All Fields] AND "complete genome"[Title] ` Use this chloroplast genome as an input for `-c`.
+  `("replace_with_species"[Organism]) AND chloroplast[All Fields] AND "complete genome"[Title] `
+Use this chloroplast genome as an input for `-c`.
 
 ### Optional Arguments
 
