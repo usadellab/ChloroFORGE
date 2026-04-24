@@ -1,5 +1,12 @@
 #!/usr/bin/env bash
 
+##########################################################################
+# Pipeline:  ChloroFORGE
+# Author:    Lucas Munnes
+# 			 Institute for Biological Data Science, HHU
+# GitHub:    https://github.com/usadellab/ChloroFORGE
+##########################################################################
+
 set -euo pipefail
 
 # =========================================================
