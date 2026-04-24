@@ -1,5 +1,12 @@
 #!/usr/bin/env python3
 
+##########################################################################
+# Pipeline:  ChloroFORGE
+# Author:    Lucas Munnes
+# 			 Institute for Biological Data Science, HHU
+# GitHub:    https://github.com/usadellab/ChloroFORGE
+##########################################################################
+
 import subprocess
 from collections import defaultdict
 import sys
