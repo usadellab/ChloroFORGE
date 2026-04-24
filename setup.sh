@@ -3,7 +3,7 @@
 ##########################################################################
 # Pipeline:  ChloroFORGE
 # Author:    Lucas Munnes
-# 			 Institute for Biological Data Science, HHU
+# 	     Institute for Biological Data Science, HHU
 # GitHub:    https://github.com/usadellab/ChloroFORGE
 ##########################################################################
 
@@ -44,7 +44,7 @@ link_global() {
 }
 chmod 555 chloroFORGE.sh
 # =========================================================
-# MINIMAP2
+# MINIMAP2 2.30
 # =========================================================
 if exists_local minimap2; then
     echo "[OK] minimap2 already in dependencies"
@@ -55,12 +55,13 @@ else
     cd "$INSTALL_DIR"
     git clone https://github.com/lh3/minimap2.git
     cd minimap2
+	git checkout v2.30
     make
     cp minimap2 "$BIN_DIR/"
 fi
 
 # =========================================================
-# SEQKIT
+# SEQKIT 2.13.0
 # =========================================================
 if exists_local seqkit; then
     echo "[OK] seqkit already in dependencies"
@@ -69,14 +70,14 @@ elif exists_global seqkit; then
 else
     echo "[INSTALL] seqkit"
     cd "$INSTALL_DIR"
-    wget -q https://github.com/shenwei356/seqkit/releases/latest/download/seqkit_linux_amd64.tar.gz
+    wget -q https://github.com/shenwei356/seqkit/releases/download/v2.13.0/seqkit_linux_amd64.tar.gz
     tar -xzf seqkit_linux_amd64.tar.gz
     mv seqkit "$BIN_DIR/"
     rm -f seqkit_linux_amd64.tar.gz
 fi
 
 # =========================================================
-# BLAST+
+# BLAST+ 2.17.0
 # =========================================================
 if exists_local blastn; then
     echo "[OK] BLAST already in dependencies"
@@ -119,13 +120,13 @@ if [[ "$INSTALL_FLYE" == true ]]; then
 
     cd "$INSTALL_DIR"
 
+
     git clone https://github.com/fenderglass/Flye.git
     cd Flye
 
     git checkout 2.9.6
 
     make
-
     cp bin/flye "$BIN_DIR/"
 fi
 
