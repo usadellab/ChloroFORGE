@@ -2,6 +2,10 @@
 
 **Reassemble chloroplast genomes from precomputed assemblies**
 
+<div align="center">
+<img width="500" height="500" alt="ChloroFORGE_logo" src="https://github.com/user-attachments/assets/67d5e396-2b4a-42b6-8695-95ea13f169dd" />
+</div>
+
 ChloroFORGE is a bioinformatics pipeline that identifies chloroplast-derived contigs from existing genome assemblies (e.g., generated with [hifiasm](https://github.com/chhylp123/hifiasm) or [verkko](https://github.com/marbl/verkko) using long reads from Oxford Nanopore or PacBio) and reconstructs the complete chloroplast genome using Flye.
 
 ---
