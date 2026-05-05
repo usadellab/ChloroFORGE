@@ -268,13 +268,7 @@ fi
 echo "Step 10: Constructing final genome..."
 FINAL="final_genome_${SAMPLE}.fasta"
 
-if [[ "$USE_CHROM_LIST" == true ]]; then
-    ANCHORED="anchored_${SAMPLE}.fasta"
-    seqkit grep -f "$CHROM_LIST" "$GENOME" -o "$ANCHORED"
-    cat "$ANCHORED" "$CHLORO" "$UNANCHORED" > "$FINAL"
-else
-    seqkit grep -v -f "cp_contigs.txt" "$GENOME" -o "${SAMPLE}_genomic_contigs.fasta"
-    cat "${SAMPLE}_genomic_contigs.fasta" "$CHLORO" > "$FINAL"
-fi
+seqkit grep -v -f "cp_contigs.txt" "$GENOME" -o "${SAMPLE}_genomic_contigs.fasta"
+cat "${SAMPLE}_genomic_contigs.fasta" "$CHLORO" > "$FINAL"
 
 echo "Pipeline completed successfully! Output: $FINAL"
