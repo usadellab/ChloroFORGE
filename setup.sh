@@ -127,7 +127,7 @@ if [[ "$INSTALL_FLYE" == true ]]; then
     git checkout 2.9.6
 
     make
-    cp bin/flye "$BIN_DIR/"
+    mv bin/flye "$BIN_DIR/"
 fi
 
 # =========================================================
