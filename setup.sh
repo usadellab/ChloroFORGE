@@ -87,7 +87,7 @@ elif exists_global blastn; then
 else
     echo "[INSTALL] BLAST+"
     cd "$INSTALL_DIR"
-    wget -q https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/ncbi-blast-*-x64-linux.tar.gz
+    wget -q https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/ncbi-blast-2.17.0+-x64-linux.tar.gz 
     tar -xzf ncbi-blast-*-x64-linux.tar.gz
 
     BLAST_DIR=$(find . -maxdepth 1 -type d -name "ncbi-blast-*")
@@ -98,37 +98,15 @@ fi
 # =========================================================
 # FLYE 2.9.6
 # =========================================================
-INSTALL_FLYE=false
-
-if exists_local flye; then
-    echo "[OK] flye already in dependencies"
-elif exists_global flye; then
-    VERSION=$(flye --version 2>/dev/null || true)
-
-    if [[ "$VERSION" == *"2.9.6"* ]]; then
-        link_global flye
-    else
-        echo "[WARN] Flye found but wrong version: $VERSION"
-        INSTALL_FLYE=true
-    fi
-else
-    INSTALL_FLYE=true
-fi
-
-if [[ "$INSTALL_FLYE" == true ]]; then
-    echo "[INSTALL] Flye 2.9.6"
-
-    cd "$INSTALL_DIR"
-
-
-    git clone https://github.com/fenderglass/Flye.git
-    cd Flye
-
-    git checkout 2.9.6
-
-    make
-    mv bin/flye "$BIN_DIR/"
-fi
+echo "[INSTALL] Flye 2.9.6"
+cd "$INSTALL_DIR"
+rm -rf Flye
+git clone https://github.com/fenderglass/Flye.git
+cd Flye
+git checkout 2.9.6
+make
+ln -sf "$INSTALL_DIR/Flye/bin/flye" "$BIN_DIR/flye"
+cd "$INSTALL_DIR"
 
 # =========================================================
 # DONE
