@@ -44,7 +44,7 @@ CP_COV=50
 MIN_OVERLAP=5000
 ALLOW_LOWCOV=false
 ESTIMATED_SIZE=150k
-
+THREADS=1
 while getopts "o:g:c:s:l:t:x:f:-:" opt; do
     case $opt in
         o) SAMPLE="$OPTARG" ;;
@@ -74,11 +74,11 @@ echo "--- Starting ChloroForge for $SAMPLE ---"
 USE_CHROM_LIST=true
 [[ -z "$CHROM_LIST" ]] && USE_CHROM_LIST=false && echo "No chromosome list provided. Using full genome."
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
 WORKDIR="./${SAMPLE}"
 mkdir -p "$WORKDIR"
 cd "$WORKDIR"
-
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 DEP_DIR="$SCRIPT_DIR/dependencies"
 BIN_DIR="$DEP_DIR/bin"
