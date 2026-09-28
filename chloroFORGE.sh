@@ -7,7 +7,7 @@
 # GitHub:    https://github.com/usadellab/ChloroFORGE
 ##########################################################################
 
-set -e 
+set -e
 
 #####################################
 # Usage function
@@ -45,8 +45,9 @@ MIN_OVERLAP=5000
 ALLOW_LOWCOV=false
 ESTIMATED_SIZE=150k
 THREADS=1
-while getopts "o:g:c:s:l:t:x:f:-:" opt; do
+while getopts "w:o:g:c:s:l:t:x:f:-:" opt; do
     case $opt in
+        w) OUTDIR="$OPTARG" ;;
         o) SAMPLE="$OPTARG" ;;
         g) GENOME="$OPTARG" ;;
         c) CHLOROPLAST="$OPTARG" ;;
@@ -64,7 +65,7 @@ while getopts "o:g:c:s:l:t:x:f:-:" opt; do
     esac
 done
 
-[[ -z "$SAMPLE" || -z "$GENOME" || -z "$CHLOROPLAST" ]] && usage
+[[ -z "${SAMPLE}" || -z "${GENOME}" || -z "${CHLOROPLAST}" || -z "${OUTDIR}" ]] && usage
 
 #####################################
 # Setup Working Directory
@@ -76,9 +77,9 @@ USE_CHROM_LIST=true
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-WORKDIR="./${SAMPLE}"
-mkdir -p "$WORKDIR"
-cd "$WORKDIR"
+WORKDIR="$(realpath "${OUTDIR}")"
+mkdir -p "${WORKDIR}" || { printf "Failed to create work dir %s\n. Abort." "${WORKDIR}"; exit 1; }
+cd "${WORKDIR}"
 
 DEP_DIR="$SCRIPT_DIR/dependencies"
 BIN_DIR="$DEP_DIR/bin"
@@ -171,7 +172,7 @@ if [[ ! -f "$DONE_EXTRACT" ]]; then
 
     CP_REF_LEN=$(seqkit stats -T "$CHLOROPLAST" | awk 'NR==2{print $5}')
     CP_TOTAL_LEN=$(seqkit stats -T "$CP_CONTIGS" | awk 'NR==2{print $5}')
-    
+
     REAL_COV=$(awk "BEGIN{printf \"%.2f\", $CP_TOTAL_LEN/$CP_REF_LEN}")
     FRAC=$(awk "BEGIN{printf \"%.6f\", ($CP_REF_LEN*$CP_COV)/$CP_TOTAL_LEN}")
 
@@ -226,7 +227,7 @@ fi
 if [[ ! -f ".flip.done" ]]; then
     echo "Step 8: Running flipping and orientation..."
     SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)
-    
+
     PY_SCRIPT="${SCRIPT_DIR}/edges.py"
     if [[ -f "results_cp/edges.fa" ]]; then
         python3 "$PY_SCRIPT" "results_cp/edges.fa" "$CHLOROPLAST" "$SAMPLE"
@@ -259,7 +260,7 @@ if (( ASM_LEN < MIN_LEN || ASM_LEN > MAX_LEN )); then
     echo "ERROR: Chloroplast assembly length outside acceptable range."
     exit 1
 else
-    echo "Length in range — concatenating final genome."
+    echo "Length in range - concatenating final genome."
 fi
 
 #####################################
