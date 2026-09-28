@@ -21,10 +21,11 @@ usage() {
     echo
     echo "ChloroFORGE: A Pipeline to reassemble Chloroplast contigs from precomputed assemblies"
     echo
-    echo "Usage: $0 -g GENOME -c CHLOROPLAST -t THREADS -o OUTPUT [-s ESTIMATED_SIZE -l CHROM_LIST -x CP_COV -f MIN_OVERLAP]"
+    echo "Usage: $0 -g GENOME -c CHLOROPLAST [ -t THREADS -o OUTPUT -s ESTIMATED_SIZE -l CHROM_LIST -x CP_COV -f MIN_OVERLAP]"
     echo
     echo "Options:"
-    echo "  -o OUTPUT        Sample name / project identifier"
+    echo "  -w OUTDIR        Path to output directory(default:PWD)"
+    echo "  -o OUTPUT        Sample name / project identifier (default: basename of input assembly)"
     echo "  -g GENOME        Path to genome assembly"
     echo "  -c CHLOROPLAST   Path to chloroplast reference genome"
 		echo "  -s ESTIMATED_SIZE Estimated size of the chloroplast (default: 150k)"
@@ -65,22 +66,50 @@ while getopts "w:o:g:c:s:l:t:x:f:-:" opt; do
     esac
 done
 
-[[ -z "${SAMPLE}" || -z "${GENOME}" || -z "${CHLOROPLAST}" || -z "${OUTDIR}" ]] && usage
+[[ -z "${GENOME}" || -z "${CHLOROPLAST}" ]] && usage
+
+GENOME="$(realpath "${GENOME}")"
+
+if [[ -z "${SAMPLE}" ]]; then
+  SAMPLE=${GENOME##*/}
+  SAMPLE=${SAMPLE/%.fa*}
+fi
+
+if [[ -z "${OUTDIR}" ]]; then
+  OUTDIR="${PWD}/${SAMPLE}"
+fi
 
 #####################################
 # Setup Working Directory
 #####################################
-echo "--- Starting ChloroForge for $SAMPLE ---"
+printf "\055-- Starting ChloroForge for %s ---\n" "${GENOME}"
 
 USE_CHROM_LIST=true
-[[ -z "$CHROM_LIST" ]] && USE_CHROM_LIST=false && echo "No chromosome list provided. Using full genome."
+[[ -z "$CHROM_LIST" ]] && USE_CHROM_LIST=false && printf "\tNo chromosome list provided. Using full genome.\n"
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 WORKDIR="$(realpath "${OUTDIR}")"
-mkdir -p "${WORKDIR}" || { printf "Failed to create work dir %s\n. Abort." "${WORKDIR}"; exit 1; }
+mkdir -vp "${WORKDIR}" || \
+  { printf "Failed to create work dir %s\n. Abort." "${WORKDIR}"; exit 1; }
 cd "${WORKDIR}"
 
+FINAL="$(realpath "final_genome_${SAMPLE}.fasta")"
+
+printf "\t--- Settings --- \
+  \n\tgenome: %s \
+  \n\tsample: %s \
+  \n\tChloroplast:%s \
+  \n\tResult dir: %s \
+  \n\tOutput assembly: %s \
+  \n\ttest. size: %s      \
+  \n\tChromosome list: %s \
+  \n\tThreads: %s \
+  \n\tChloroplast cov: %s \
+  \n\tMin. overlap: %s\n" \
+  "${GENOME}" "${SAMPLE}" "${CHLOROPLAST}" "${WORKDIR}" "${FINAL}" \
+  "${ESTIMATED_SIZE}" "${CHROM_LIST}" "${THREADS}" "${CP_COV}" "${MIN_OVERLAP}"
+exit 1
 DEP_DIR="$SCRIPT_DIR/dependencies"
 BIN_DIR="$DEP_DIR/bin"
 FLYE_BIN="$DEP_DIR/Flye/bin"

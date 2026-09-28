@@ -10,30 +10,34 @@ ChloroFORGE is a bioinformatics pipeline that identifies chloroplast-derived con
 
 ## Table of Contents
 
+- [Table of Contents](#table-of-contents)
 - [Dependencies](#dependencies)
 - [Installation](#installation)
 - [Usage](#usage)
   - [Required Arguments](#required-arguments)
   - [Optional Arguments](#optional-arguments)
 - [Examples](#examples)
+  - [Basic run](#basic-run)
+  - [High coverage + custom overlap](#high-coverage--custom-overlap)
+  - [Low coverage assembly](#low-coverage-assembly)
 - [Output Structure](#output-structure)
-- [Notes & Tips](#notes--tips)
+- [Notes \& Tips](#notes--tips)
 - [Citation](#citation)
 
 ---
 
-
 ## Dependencies
 
-ChloroFORGE relies on the following tools (installed automatically via `setup.sh`):
+`ChloroFORGE` relies on the following tools (installed automatically via
+`setup.sh`):
 
-| Tool | Version | Link |
-|------|---------|------|
-| `minimap2` | **2.30** | https://github.com/lh3/minimap2 |
-| `Flye` | **2.9.6**| https://github.com/mikolmogorov/Flye |
-| `seqkit` | **2.13.0** | https://github.com/shenwei356/seqkit |
-| `blastn` (BLAST+) | **2.17.0** | https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/ |
-| `python3` | >=3.7 | — |
+| Tool              | Version    | Link                                                            |
+| ----------------- | ---------- | --------------------------------------------------------------- |
+| `minimap2`        | **2.30**   | <https://github.com/lh3/minimap2>                               |
+| `Flye`            | **2.9.6**  | <https://github.com/mikolmogorov/Flye>                          |
+| `seqkit`          | **2.13.0** | <https://github.com/shenwei356/seqkit>                          |
+| `blastn` (BLAST+) | **2.17.0** | <https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/> |
+| `python3`         | >=3.7      | <https://www.python.org/>                                       |
 
 ---
 
@@ -45,38 +49,45 @@ cd chloroFORGE
 bash setup.sh
 ```
 
-The setup script will verify or install all required dependencies and prepare the internal pipeline structure.
+The setup script will verify or install all required dependencies and prepare
+the internal pipeline structure.
 
 ---
 
 ## Usage
 
 ```bash
-./chloroFORGE.sh -g GENOME -c CHLOROPLAST -t THREADS -o OUTPUT [OPTIONS]
+./chloroFORGE.sh -g GENOME -c CHLOROPLAST [OPTIONS]
 ```
 
 ### Required Arguments
 
-| Flag | Description |
-|------|-------------|
-| `-o` | Sample name / project identifier |
-| `-g` | Absolute path to genome assembly (FASTA) |
-| `-c` | Absolute path to chloroplast reference genome (FASTA) |
-| `-t` | Number of threads |
+| Argument | Description                                           |
+| -------- | ----------------------------------------------------- |
+| `-g`     | Absolute path to genome assembly (FASTA)              |
+| `-c`     | Absolute path to chloroplast reference genome (FASTA) |
 
-> You can download a chloroplast reference from a closely related species via [NCBI GenBank or RefSeq](https://www.ncbi.nlm.nih.gov/). Search for your organism and download the chloroplast genome in FASTA format. A useful search strategy is to combine the latin organism name with terms such as "chloroplast" and "complete genome". For example, the following query can help identify suitable reference sequences: 
-  `("replace_with_species"[Organism]) AND chloroplast[All Fields] AND "complete genome"[Title] `
-Use this chloroplast genome as an input for `-c`.
+> You can download a chloroplast reference from a closely related species via
+> [NCBI GenBank or RefSeq](https://www.ncbi.nlm.nih.gov/). Search for your
+> organism and download the chloroplast genome in FASTA format. A useful search
+> strategy is to combine the latin organism name with terms such as
+> "chloroplast" and "complete genome". For example, the following query can help
+> identify suitable reference sequences: `("replace_with_species"[Organism]) AND
+> chloroplast[All Fields] AND "complete genome"[Title] ` Use this chloroplast
+> genome as an input for `-c`.
 
 ### Optional Arguments
 
-| Flag | Description | Default |
-|------|-------------|---------|
-| `-s` | Estimated chloroplast genome size | `150k` |
-| `-l` | List of contigs representing chromosomes | none |
-| `-x` | Target chloroplast contig coverage for Flye | `50` |
-| `-f` | Minimum contig overlap for Flye assembly | `5000` |
-| `--allow-lowcov` | Allow assembly even if coverage is below target | `false` |
+| Argument         | Description                                     | Default                                        |
+| ---------------- | ----------------------------------------------- | ---------------------------------------------- |
+| `-w`             | Path to output directory / working dir          | Current working directory                      |
+| `-o`             | Sample name / project identifier                | Base name of input assembly without fa* suffix |
+| `-t`             | Number of threads                               | 1                                              |
+| `-s`             | Estimated chloroplast genome size               | `150k`                                         |
+| `-l`             | List of contigs representing chromosomes        | none                                           |
+| `-x`             | Target chloroplast contig coverage for Flye     | `50`                                           |
+| `-f`             | Minimum contig overlap for Flye assembly        | `5000`                                         |
+| `--allow-lowcov` | Allow assembly even if coverage is below target | `false`                                        |
 
 ---
 
@@ -91,6 +102,11 @@ Use this chloroplast genome as an input for `-c`.
   -t 16 \
   -o sample01
 ```
+
+This command will create the directory `genome`
+as output directory in the current working directory.
+The final assembly containing the nuclear and chloroplast assembly
+will be saved as `./genome/final_genome_genome.fasta`.
 
 ---
 
@@ -147,13 +163,20 @@ sample01/
 
 ---
 
-
 ## Notes & Tips
 
-- **Assembly validation:** The pipeline stops if the final assembly length deviates more than ±10% from the reference chloroplast length. This is a sanity check — inspect your inputs if this triggers.
-- **Coverage tuning:** The default target coverage of `50x` works well in most cases. If assembly fails, try lowering `-x` before resorting to `--allow-lowcov`.
-- **Overlap tuning:** The default minimum overlap (`-f 5000`) can be decreased for fragmented inputs or increased for better-resolved assemblies.
-- **Reference genome:** Always use a chloroplast reference from a closely related species for best BLAST sensitivity.
+- **Assembly validation:** The pipeline stops if the final assembly length
+                           deviates more than +/-10% from the reference
+                           chloroplast length. This is a sanity check - inspect
+                           your inputs if this triggers.
+- **Coverage tuning:** The default target coverage of `50x` works well in most
+                       cases. If assembly fails, try lowering `-x` before
+                       resorting to `--allow-lowcov`.
+- **Overlap tuning:** The default minimum overlap (`-f 5000`) can be decreased
+                      for fragmented inputs or increased for better-resolved
+                      assemblies.
+- **Reference genome:** Always use a chloroplast reference from a closely
+                        related species for best BLAST sensitivity.
 
 ---
 
@@ -161,6 +184,6 @@ sample01/
 
 If you use ChloroFORGE in your research, please cite this repository:
 
-```
-ChloroFORGE – https://github.com/usadellab/ChloroFORGE
+```text
+ChloroFORGE - https://github.com/usadellab/ChloroFORGE
 ```
