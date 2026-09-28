@@ -109,7 +109,7 @@ printf "\t--- Settings --- \
   \n\tMin. overlap: %s\n" \
   "${GENOME}" "${SAMPLE}" "${CHLOROPLAST}" "${WORKDIR}" "${FINAL}" \
   "${ESTIMATED_SIZE}" "${CHROM_LIST}" "${THREADS}" "${CP_COV}" "${MIN_OVERLAP}"
-exit 1
+
 DEP_DIR="$SCRIPT_DIR/dependencies"
 BIN_DIR="$DEP_DIR/bin"
 FLYE_BIN="$DEP_DIR/Flye/bin"
